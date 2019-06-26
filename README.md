@@ -37,32 +37,35 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## 使用saga 做异步处理
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> 1、引入
+import createSagaMiddleware from 'redux-saga'
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> 4、创建一个文件 sagas.js
+> 5、引入这个文件
+import todoSagas from './sagas';
 
-### Code Splitting
+> 2、创建一个saga
+const sagaMiddleware = createSagaMiddleware()
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+> 3、使用中间件
+const enhancer = composeEnhancers( applyMiddleware(sagaMiddleware))
 
-### Analyzing the Bundle Size
+> 6、通过sagaMiddleware运行这个文件。
+sagaMiddleware.run(todoSagas);
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### saga工作流程
+component组件发送action->
 
-### Making a Progressive Web App
+saga中间件takeEvery接收到了action->
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+takeEvery会触发第二个参数（函数）->
 
-### Advanced Configuration
+函数把异步得到的数据，封装成action ->
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+发送给store(put 相当于store.dispatch) ->
+store更新 state ->
 
-### Deployment
+返回给组件，渲染页面(store.subscribe 订阅store数据变化)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
